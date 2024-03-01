@@ -1,10 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_test/color_change_consts.dart';
-import 'package:solid_test/cubit/theme_cubit.dart';
 import 'package:solid_test/widgets/change_locale_widget.dart';
 
 /// A page that changes its background color and text color
@@ -42,11 +40,6 @@ class _ColorChangePageState extends State<ColorChangePage> {
     });
   }
 
-  void _handleChangeTheme() {
-    final themeCubit = BlocProvider.of<ThemeCubit>(context);
-    themeCubit.toggleTheme();
-  }
-
   @override
   Widget build(BuildContext context) {
     final String? helloWorld = AppLocalizations.of(context)?.helloWorld;
@@ -58,7 +51,6 @@ class _ColorChangePageState extends State<ColorChangePage> {
           children: [
             GestureDetector(
               onTap: _handleChangeColor,
-              onDoubleTap: _handleChangeTheme,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 color: _bgColor,
