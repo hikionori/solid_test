@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_test/color_change_consts.dart';
-import 'package:solid_test/cubit/locale_cubit.dart';
 import 'package:solid_test/cubit/theme_cubit.dart';
+import 'package:solid_test/widgets/change_locale_widget.dart';
 
 /// A page that changes its background color and text color
 class ColorChangePage extends StatefulWidget {
@@ -47,39 +47,6 @@ class _ColorChangePageState extends State<ColorChangePage> {
     themeCubit.toggleTheme();
   }
 
-  void _handleChangeLocale() {
-    const supportedLocales = AppLocalizations.supportedLocales;
-
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: ListView.builder(
-            itemCount: supportedLocales.length,
-            itemBuilder: (context, index) {
-              final locale = supportedLocales[index];
-
-              return ListTile(
-                leading: Image.asset(
-                  'assets/flags/${locale.languageCode}.png',
-                  width: 32,
-                  height: 32,
-                ),
-                title: Text(locale.languageCode),
-                onTap: () {
-                  final localeCubit = BlocProvider.of<LocaleCubit>(context);
-                  localeCubit.changeLocale(locale);
-                  Navigator.pop(context);
-                },
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final String? helloWorld = AppLocalizations.of(context)?.helloWorld;
@@ -99,20 +66,33 @@ class _ColorChangePageState extends State<ColorChangePage> {
                 width: double.infinity,
               ),
             ),
-            Text(
-              helloWorld ?? 'Hello, World!',
-              style: TextStyle(
-                color: _textColor,
-                fontSize: 24,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: (helloWorld ?? "Hello World").split('').map((char) {
+                return AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  child: Text(
+                    char,
+                    key: ValueKey<String>(char),
+                    style: TextStyle(
+                      color: _textColor,
+                      fontSize: 24,
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _handleChangeLocale,
-        child: const Icon(Icons.language),
-      ),
+      floatingActionButton: ChangeLocaleWidget(),
     );
   }
 }
