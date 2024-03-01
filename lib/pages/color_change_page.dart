@@ -20,9 +20,9 @@ class _ColorChangePageState extends State<ColorChangePage> {
 
   void _handleChangeColor() {
     setState(() {
-      // generate using random color HSV
-      _bgColor = Color((Random().nextDouble() * 0xFFFFFF).toInt() << 0)
-          .withOpacity(1.0);
+      _bgColor = Color(
+        (Random().nextDouble() * ColorChangeConsts.baseWhite).toInt() << 0,
+      ).withOpacity(1.0);
 
       // Compute the luminance of the background color.
       // Luminance is a measure of the perceived brightness of a color.

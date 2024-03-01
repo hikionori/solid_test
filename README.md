@@ -11,10 +11,10 @@ App should be developed using the latest stable version of Flutter. The applicat
 ```dart
 import 'dart:math';
 
-// Generate random color using bitwise OR
+// generate random color using Random class and HSV color model
 Color randomColor() {
-  final random = Random();
-  return Color(0xFF000000 + random.nextInt(0xFFFFFF));
+  return Color((Random().nextDouble() * 0xFFFFFF).toInt() << 0)
+          .withOpacity(1.0);
 }
 ```
 But if text color is white and background color is white, the text will be invisible. So we should change color of the text if the background color is too light. We can use `brightness` property of the `Color` class to check if the color is too light or too dark. If the color is too light we should change the text color to black. 
