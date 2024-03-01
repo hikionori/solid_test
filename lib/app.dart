@@ -11,10 +11,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => LocaleCubit()),
-      ],
+    return BlocProvider(
+      create: (context) => LocaleCubit(),
       child: BlocBuilder<LocaleCubit, LocaleState>(
         builder: (context, state) {
           return MaterialApp(
